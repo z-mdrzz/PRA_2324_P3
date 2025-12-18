@@ -1,3 +1,4 @@
+
 #ifndef BSTREE_H
 #define BSTREE_H
 
@@ -39,7 +40,7 @@ class BSTree {
 		out << n->elem << " ";
 		print_inorder(out, n->right);
 	}
-	
+
 	BSNode<T>* remove(BSNode<T>* n, T e){
         if (n == nullptr){
             throw runtime_error("Elemento no encontrado");
@@ -67,7 +68,17 @@ class BSTree {
 		else if(n->right != nullptr){return max(n->right);}
 		else{return n->elem;}
 	}
-	
+	//funcion para obtener el arbol binario minimo 2 examen practicas
+	T min(BSNode<T>* node) const {
+            if (node == nullptr) {
+                throw std::runtime_error("Elemento no encontrado");
+            }
+            
+            if (node->left == nullptr) {
+                return node->elem; 
+            }
+            return min(node->left);
+        }
 	BSNode<T>* remove_max(BSNode<T>* n){
 		if (n->right == nullptr){
 			BSNode<T>* aux = n->left;
@@ -92,6 +103,8 @@ class BSTree {
    	BSTree(){
 		this->root = nullptr;
 		this->nelem = 0;
+		//en public hay q declarar t()min
+		
 	}
 	int size() const{
 		return nelem;
@@ -111,6 +124,25 @@ class BSTree {
 		bst.print_inorder(out, bst.root);
 		return out;
 	}
+//funcion de prune 2 examen de practicas 
+void prune_N(int nTimes, bool pMAX) {
+            for (int i = 0; i < nTimes; i++) {
+                if (isEmpty()) {
+                    break; 
+                }
+                try {
+                    T valueToRemove;
+                    if (pMAX) {
+                        valueToRemove = max(root);
+                    } else { 
+                        valueToRemove = min(root);
+                    }
+                    remove(valueToRemove);
+                } catch (const std::runtime_error&) {
+                    break;
+                }
+            }
+        }
 	void remove(T e){
 		root = remove(root, e);
 		nelem--;
